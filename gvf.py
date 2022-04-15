@@ -8,6 +8,7 @@
 # Chenyang Xu, et al. "Snakes, Shpes, and Gradient Vector Flow", IEEE TRANACTIONS ON IMAGE PROCESSING, VOL. 7, NO. 3, MARCH 1998
 
 import sys
+import imageio
 import skimage.color
 import skimage.data
 import skimage.transform
@@ -71,7 +72,7 @@ if __name__=='__main__':
     # load image and preprocess
     if len(sys.argv) > 1:
         fn = sys.argv[1]
-        img = skimage.color.rgb2gray(skimage.data.imread(fn))
+        img = skimage.color.rgb2gray(imageio.imread(fn, pilmode='RGB'))
     else:
         img = skimage.color.rgb2gray(skimage.data.lena())
         img = skimage.transform.resize(img, (256, 256))
