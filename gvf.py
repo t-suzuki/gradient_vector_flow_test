@@ -48,11 +48,11 @@ def gradient_vector_flow(fx, fy, mu, dx=1.0, dy=1.0, verbose=True):
     return curr_u, curr_v
 
 def edge_map(img, sigma):
-    blur = skimage_filter.gaussian_filter(img, sigma)
-    return skimage_filter.sobel(blur)
+    blur = skimage.filters.gaussian(img, sigma)
+    return skimage.filters.sobel(blur)
 
 def gradient_field(im):
-    im = skimage_filter.gaussian_filter(im, 1.0)
+    im = skimage.filters.gaussian(im, 1.0)
     gradx = np.hstack([im[:, 1:], im[:, -2:-1]]) - np.hstack([im[:, 0:1], im[:, :-1]]) 
     grady = np.vstack([im[1:, :], im[-2:-1, :]]) - np.vstack([im[0:1, :], im[:-1, :]]) 
     return gradx, grady
