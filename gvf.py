@@ -13,7 +13,7 @@ import skimage.color
 import skimage.data
 import skimage.transform
 try:
-    import skimage.filter as skimage_filter
+    import skimage.filters as skimage_filter
 except:
     import skimage.filters as skimage_filter
 import numpy as np
