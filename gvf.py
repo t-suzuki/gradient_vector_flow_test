@@ -107,8 +107,8 @@ if __name__=='__main__':
     fig.tight_layout()
     fig, axs = plt.subplots(1, 2, figsize=(12, 8))
     fig.suptitle('Gradient Vector Flow (2D) demo')
-    ax = axs[0]; plot_vector_field(ax, fx, fy); ax.set_title('f')
-    ax = axs[1]; plot_vector_field(ax, gx, gy); ax.set_title('GVF')
+    ax = axs[0]; plot_vector_field(ax, fx, fy); ax.set_title('f');ax.set_axis_off()
+    ax = axs[1]; plot_vector_field(ax, gx, gy); ax.set_title('GVF');ax.set_axis_off()
     fig.tight_layout()
     plt.show()
 
