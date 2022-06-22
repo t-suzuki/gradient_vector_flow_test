@@ -8,11 +8,12 @@
 # Chenyang Xu, et al. "Snakes, Shpes, and Gradient Vector Flow", IEEE TRANACTIONS ON IMAGE PROCESSING, VOL. 7, NO. 3, MARCH 1998
 
 import sys
+import imageio
 import skimage.color
 import skimage.data
 import skimage.transform
 try:
-    import skimage.filter as skimage_filter
+    import skimage.filters as skimage_filter
 except:
     import skimage.filters as skimage_filter
 import numpy as np
@@ -47,11 +48,11 @@ def gradient_vector_flow(fx, fy, mu, dx=1.0, dy=1.0, verbose=True):
     return curr_u, curr_v
 
 def edge_map(img, sigma):
-    blur = skimage_filter.gaussian_filter(img, sigma)
-    return skimage_filter.sobel(blur)
+    blur = skimage.filters.gaussian(img, sigma)
+    return skimage.filters.sobel(blur)
 
 def gradient_field(im):
-    im = skimage_filter.gaussian_filter(im, 1.0)
+    im = skimage.filters.gaussian(im, 1.0)
     gradx = np.hstack([im[:, 1:], im[:, -2:-1]]) - np.hstack([im[:, 0:1], im[:, :-1]]) 
     grady = np.vstack([im[1:, :], im[-2:-1, :]]) - np.vstack([im[0:1, :], im[:-1, :]]) 
     return gradx, grady
@@ -71,7 +72,7 @@ if __name__=='__main__':
     # load image and preprocess
     if len(sys.argv) > 1:
         fn = sys.argv[1]
-        img = skimage.color.rgb2gray(skimage.data.imread(fn))
+        img = skimage.color.rgb2gray(imageio.imread(fn, pilmode='RGB'))
     else:
         img = skimage.color.rgb2gray(skimage.data.lena())
         img = skimage.transform.resize(img, (256, 256))
@@ -95,19 +96,19 @@ if __name__=='__main__':
     def vmax(values): return max(values.max(), -values.min())
     fig, axs = plt.subplots(2, 4, figsize=(16, 8))
     fig.suptitle('Gradient Vector Flow (2D) demo')
-    ax = axs[0][0]; ax.imshow(img, cmap='gray'); ax.set_title('org')
-    ax = axs[0][1]; ax.imshow(edge[:, :], cmap='gray'); ax.set_title('edge')
-    ax = axs[0][2]; ax.imshow(fx, vmin=vmin(fx), vmax=vmax(fx), cmap='seismic'); ax.set_title('fx')
-    ax = axs[0][3]; ax.imshow(fy, vmin=vmin(fx), vmax=vmax(fx), cmap='seismic'); ax.set_title('fy')
-    ax = axs[1][0]; ax.imshow(gx, vmin=vmin(gx), vmax=vmax(gx), cmap='seismic'); ax.set_title('GVFx')
-    ax = axs[1][1]; ax.imshow(gy, vmin=vmin(gy), vmax=vmax(gy), cmap='seismic'); ax.set_title('GVFy')
-    ax = axs[1][2]; plot_vector_field(ax, fx, fy); ax.set_title('f')
-    ax = axs[1][3]; plot_vector_field(ax, gx, gy); ax.set_title('GVF')
+    ax = axs[0][0]; ax.imshow(img, cmap='gray'); ax.set_title('org');ax.set_axis_off()
+    ax = axs[0][1]; ax.imshow(edge[:, :], cmap='gray'); ax.set_title('edge');ax.set_axis_off()
+    ax = axs[0][2]; ax.imshow(fx, vmin=vmin(fx), vmax=vmax(fx), cmap='seismic'); ax.set_title('fx');ax.set_axis_off()
+    ax = axs[0][3]; ax.imshow(fy, vmin=vmin(fx), vmax=vmax(fx), cmap='seismic'); ax.set_title('fy');ax.set_axis_off()
+    ax = axs[1][0]; ax.imshow(gx, vmin=vmin(gx), vmax=vmax(gx), cmap='seismic'); ax.set_title('GVFx');ax.set_axis_off()
+    ax = axs[1][1]; ax.imshow(gy, vmin=vmin(gy), vmax=vmax(gy), cmap='seismic'); ax.set_title('GVFy');ax.set_axis_off()
+    ax = axs[1][2]; plot_vector_field(ax, fx, fy); ax.set_title('f');ax.set_axis_off()
+    ax = axs[1][3]; plot_vector_field(ax, gx, gy); ax.set_title('GVF');ax.set_axis_off()
     fig.tight_layout()
-    fig, axs = plt.subplots(1, 2, figsize=(12, 8))
+    fig, axs = plt.subplots(1, 2, figsize=(16, 9))
     fig.suptitle('Gradient Vector Flow (2D) demo')
-    ax = axs[0]; plot_vector_field(ax, fx, fy); ax.set_title('f')
-    ax = axs[1]; plot_vector_field(ax, gx, gy); ax.set_title('GVF')
+    ax = axs[0]; plot_vector_field(ax, fx, fy); ax.set_title('f');ax.set_axis_off()
+    ax = axs[1]; plot_vector_field(ax, gx, gy); ax.set_title('GVF');ax.set_axis_off()
     fig.tight_layout()
     plt.show()
 
